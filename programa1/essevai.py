@@ -91,50 +91,6 @@ class Main():
         
     
     #lembrando de colocar o estado inicial depois, caso isso dê certo
-    # novo = set(automato.transicoes[0,'a'])
-    
-    # if novo not in estados:
-    #     estados.append(novo.copy())
-        
-    #     afd[0,'a'] = novo.copy()
-        
-    #     conjunto = set()
-    #     for estado in novo:
-    #         elem = set(automato.transicoes[estado, 'a'])
-    #         conjunto.update(elem.copy())
-            
-        
-    #     afd[tuple(novo.copy()), 'a'] = conjunto.copy()
-    #     novo = conjunto.copy()
-        
-    #     if novo not in estados:
-    #         estados.append(novo.copy())
-        
-    #     conjunto = set()
-    #     for estado in novo:
-    #         elem = set(automato.transicoes[estado, 'b'])
-    #         conjunto.update(elem.copy())
-            
-        
-    #     afd[tuple(novo.copy()), 'b'] = conjunto.copy()
-    #     novo = conjunto.copy()
-        
-    #     if novo not in estados:
-    #         estados.append(novo.copy())
-        
-    #         elem.clear()
-    #         conjunto.clear()
-    #         for estado in novo:
-    #             elem = set(automato.transicoes[estado, 'a'])
-    #             conjunto.update(elem.copy())
-                
-            
-    #         afd[tuple(novo.copy()),'a'] = conjunto.copy()
-            
-            
-    #         if novo not in estados:
-    #             estados.append(novo.copy())
-            
             
             #acabou aqui os estados novos de transicao em a
                 
