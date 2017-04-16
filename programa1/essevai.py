@@ -64,7 +64,32 @@ class Main():
             estados.append(novo.copy())
         
         valor_anterior = novo.copy()
-        #------------------------------------------------
+        #-----------------------------------------------------
+        
+        novo = afd[tuple(valor_anterior.copy()), 'b'].copy()
+        conjunto = set()
+        for estado in novo:
+            elem = set(automato.transicoes[estado, 'b'])
+            conjunto.update(elem.copy())
+            
+        
+        afd[tuple(novo.copy()), 'b'] = conjunto.copy()
+        
+        if novo not in estados:
+            estados.append(novo.copy())
+        
+        conjunto = set()
+        for estado in novo:
+            elem = set(automato.transicoes[estado, 'a'])
+            conjunto.update(elem.copy())
+        
+        
+        afd[tuple(novo.copy()), 'a'] = conjunto.copy()
+        
+        if novo not in estados:
+            estados.append(novo.copy())
+        
+        
         novo = afd[tuple(valor_anterior.copy()), 'a'].copy()
         
         conjunto = set()
@@ -74,8 +99,12 @@ class Main():
         
         afd[tuple(novo.copy()), 'a'] = conjunto.copy()
         
+        
         if novo not in estados:
             estados.append(novo.copy())
+        
+        
+        novo = afd[tuple(valor_anterior.copy()), 'b'].copy()
         
         conjunto = set()
         for estado in novo:
@@ -86,8 +115,32 @@ class Main():
         
         if novo not in estados:
             estados.append(novo.copy())
+        #---------------------------------------------------------
         
-            #------------------------------------------------------
+        # #------------------------------------------------
+        # novo = afd[tuple(valor_anterior.copy()), 'a'].copy()
+        
+        # conjunto = set()
+        # for estado in novo:
+        #     elem = set(automato.transicoes[estado, 'a'])
+        #     conjunto.update(elem.copy())
+        
+        # afd[tuple(novo.copy()), 'a'] = conjunto.copy()
+        
+        # if novo not in estados:
+        #     estados.append(novo.copy())
+        
+        # conjunto = set()
+        # for estado in novo:
+        #     elem = set(automato.transicoes[estado, 'b'])
+        #     conjunto.update(elem.copy())
+        
+        # afd[tuple(novo.copy()), 'b'] = conjunto.copy()
+        
+        # if novo not in estados:
+        #     estados.append(novo.copy())
+        
+        # #------------------------------------------------------
         
     
     #lembrando de colocar o estado inicial depois, caso isso dê certo
@@ -99,89 +152,96 @@ class Main():
         if novo not in estados:
             estados.append(novo.copy())
             
-            afd[0,'b'] = novo.copy()
+            afd[0,'b'] = novo.copy() #{1}
             
             conjunto = set()
+            
             for estado in novo:
                 elem = set(automato.transicoes[estado, 'b'])
-                conjunto.update(elem.copy())
+                conjunto.update(elem.copy()) #{0,2}
             
-            afd[tuple(novo.copy()), 'b'] = conjunto.copy()
+            afd[tuple(novo.copy()), 'b'] = conjunto.copy() #({1},b) = {0,2}
+            
             
             conjunto = set()
             for estado in novo:
                 elem = set(automato.transicoes[estado, 'a'])
-                conjunto.update(elem.copy())
+                conjunto.update(elem.copy()) #{2}
             
         
-            afd[tuple(novo.copy()), 'a'] = conjunto.copy()
+            afd[tuple(novo.copy()), 'a'] = conjunto.copy() #({1},a) = {2}
             
             if novo not in estados:
                 estados.append(novo.copy())
             
             valor_anterior = novo.copy()
-            #------------------------------------------------
-            novo = afd[tuple(valor_anterior.copy()), 'b'].copy()
+            
+            novo = afd[tuple(valor_anterior.copy()), 'b'].copy() #{0,2}
+            
             
             conjunto = set()
-            for estado in novo:
-                elem = set(automato.transicoes[estado, 'b'])
-                conjunto.update(elem.copy())
+            for estado in novo: # 0,2
+                elem = set(automato.transicoes[estado, 'b']) 
+                conjunto.update(elem.copy()) # {1,2}
             
-            afd[tuple(novo.copy()), 'b'] = conjunto.copy()
+            
+            afd[tuple(novo.copy()), 'b'] = conjunto.copy() #({0,2},b) = {1,2}
             
             if novo not in estados:
                 estados.append(novo.copy())
+            
+            conjunto = set()
+            for estado in novo: # 0,2
+                elem = set(automato.transicoes[estado, 'a']) 
+                conjunto.update(elem.copy()) #{0,1,2}
+            
+            
+            afd[tuple(novo.copy()), 'a'] = conjunto.copy() #({0,2},a) = {0,1,2}
+            
+            if novo not in estados:
+                estados.append(novo.copy())
+            
+            
+            
+            novo = afd[tuple(valor_anterior.copy()), 'a'].copy() #{2}
             
             conjunto = set()
             for estado in novo:
                 elem = set(automato.transicoes[estado, 'a'])
-                conjunto.update(elem.copy())
+                conjunto.update(elem.copy()) #{1,2}
             
-            afd[tuple(novo.copy()), 'a'] = conjunto.copy()
-            
-            if novo not in estados:
-                estados.append(novo.copy())
-            
-            #------------------------------------------------------
-            
-            novo = afd[tuple(valor_anterior.copy()), 'a'].copy()
-            
-            conjunto = set()
-            for estado in novo:
-                elem = set(automato.transicoes[estado, 'a'])
-                conjunto.update(elem.copy())
-            
-            afd[tuple(novo.copy()), 'a'] = conjunto.copy()
+            afd[tuple(novo.copy()), 'a'] = conjunto.copy() #({2},a) = {1,2}
             
             if novo not in estados:
                 estados.append(novo.copy())
             
             conjunto = set()
-            for estado in novo:
+            
+            
+            for estado in novo: #{2}
                 elem = set(automato.transicoes[estado, 'b'])
-                conjunto.update(elem.copy())
+                conjunto.update(elem.copy()) #{2}
             
             
-            afd[tuple(novo.copy()), 'b'] = conjunto.copy()
+            afd[tuple(novo.copy()), 'b'] = conjunto.copy() #({2},b) = {2}
             
             if novo not in estados:
                 estados.append(novo.copy())
             
             
-            novo = afd[tuple(valor_anterior.copy()), 'b'].copy()
+            novo = afd[tuple(valor_anterior.copy()), 'b'].copy() #{0,2}
             
             
             conjunto = set()
             for estado in novo:
                 elem = set(automato.transicoes[estado, 'b'])
-                conjunto.update(elem.copy())
+                conjunto.update(elem.copy()) #{1,2}
             
-            afd[tuple(novo.copy()), 'b'] = conjunto.copy()
+            afd[tuple(novo.copy()), 'b'] = conjunto.copy() #({0,2},b) = {1,2}
             
             if novo not in estados:
                 estados.append(novo.copy())
-            #---------------------------------------------------------
+                
             
             valor_anterior = novo.copy()
             #------------------------------------------------
@@ -209,7 +269,6 @@ class Main():
             if novo not in estados:
                 estados.append(novo.copy())
             
-            #------------------------------------------------------
             
             novo = afd[tuple(valor_anterior.copy()), 'a'].copy()
             
@@ -242,8 +301,8 @@ class Main():
             
             
         
-    print(afd.items())        
-        
+    print(len(afd.keys()))        
+    print(afd)    
             
             
         
