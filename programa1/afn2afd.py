@@ -42,14 +42,15 @@ class AFN():
                 for s in self.alfabeto:
                     conjunto = set()
                     for estado in e:
-                        elem = set(self.transicoes[estado, s]) 
-                        conjunto.update(elem.copy()) 
-                        
-                        
+                        try:
+                            elem = set(self.transicoes[estado, s]) 
+                            conjunto.update(elem.copy()) 
+                        except KeyError:
+                            self.transicoes[estado, s] = frozenset([])
+                            
                     afd[tuple(e.copy()), s] = conjunto.copy()
                     
                     if conjunto.copy() not in estados:
-                        
                         estados.append(conjunto.copy())
         return afd
         
