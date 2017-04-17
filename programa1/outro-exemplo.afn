@@ -1,11 +1,11 @@
 AFN version 1
 states 4
 alfabeth a b
-init 0
-finals 3
+init q0
+finals q3
 trans
-0 a 0 1
-0 b 0
-1 a 2
-2 a 3
+q0 a q0 q1
+q0 b q0
+q1 a q2
+q2 a q3
 end

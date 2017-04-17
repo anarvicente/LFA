@@ -64,38 +64,6 @@ class AFN():
                         
         self.lista_estados = estados
         return afd
-        
-    
-    def escreve_afd(self,sys,afd):
-        
-        import re
-        
-        try:
-            arq = open(sys.argv[2],'w')
-        except IndexError:
-            arq = open(self.nome_arq.strip(".afn")+".afd",'w')
-    
-        texto = []
-        texto.append("AFD version 1\n")
-        texto.append("states " + str((2**self.estados)-1) + "\n")
-        
-        
-        texto.append("alfabeth " + re.sub("\[|\]|'|,","",str([simbolo for simbolo in self.alfabeto])) + "\n")
-        texto.append("init " + re.sub("\(|\)|,|'","",str(tuple(self.inicial))) + "\n")
-        texto.append("finals " + re.sub("\(|\)|,|'","",str(tuple(self.final))) + "\n")
-        texto.append("trans" + "\n")
-        
-        for simbolo in self.alfabeto:
-            for estado in self.lista_estados:
-                texto.append(re.sub("\{|\}|,|'","",str(estado)) + " " + re.sub("\{|\}|,|'","",str(simbolo)) + " " + re.sub("\{|\}|,|'","",str(afd[tuple(estado),simbolo])) +"\n")
-        
-        
-        texto.append("end")
-        arq.writelines(texto)
-        arq.close()
-        
-        
-    
 
 import sys
 class Main():
@@ -104,16 +72,47 @@ class Main():
     
     afd = automato.toAFD()
     
-    automato.escreve_afd(sys,afd)
+    print(len(afd.keys()))
+    
+    
+    
     
     
     print(afd)
         
+    try:
+        arq = open(sys.argv[2],'w')
+    except IndexError:
+        arq = open(automato.nome_arq.strip(".afn")+".afd",'w')
+    
+    import re
+    
+    texto = []
+    texto.append("AFD version 1\n")
+    texto.append("states " + str((2**automato.estados)-1) + "\n")
+    
+    
+    texto.append("alfabeth " + rstr([simbolo for simbolo in automato.alfabeto]) + "\n")
+    texto.append("init " + str(tuple(automato.inicial)) + "\n")
+    texto.append("finals " + str(tuple(automato.final)) + "\n")
+    texto.append("trans" + "\n")
+    
+    for simbolo in automato.alfabeto:
+        for estado in automato.lista_estados:
+            texto.append(str(estado) + " " + str(simbolo) + " " + str(afd[tuple(estado),simbolo]) +"\n")
+    
+    
+    texto.append("end")
+    arq.writelines(texto)
+    arq.close()
     
     
     
     
-    
+    linha = arq1.readline()
+        re.sub()
+    while linha != "end":
+        re.sub()
     
     
     

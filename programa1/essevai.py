@@ -382,8 +382,3 @@ class Main():
     print(len(afd.keys()))        
     print(afd)    
     
-    
-    try:
-        print(sys.argv[2])        
-    except IndexError:
-        pass
