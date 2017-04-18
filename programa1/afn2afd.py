@@ -82,8 +82,15 @@ class AFN():
         
         texto.append("alfabeth " + re.sub("\[|\]|'|,","",str([simbolo for simbolo in self.alfabeto])) + "\n")
         texto.append("init " + re.sub("\(|\)|,|'","",str(tuple(self.inicial))) + "\n")
-        texto.append("finals " + re.sub("\(|\)|,|'","",str(tuple(self.final))) + "\n")
-        texto.append("trans" + "\n")
+        texto.append("finals")
+        
+        for estado in self.lista_estados:
+            for final in self.final:
+                if final in estado:
+                    texto.append(" "+ re.sub("\'","",str(estado)))
+                    
+                    
+        texto.append("\ntrans" + "\n")
         
         for simbolo in self.alfabeto:
             for estado in self.lista_estados:
