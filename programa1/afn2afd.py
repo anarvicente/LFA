@@ -1,9 +1,10 @@
-
+""" @package docstring
+    Autor: Ana Rubia R. V """
 
 class AFN():
-    
+    """ Classe para carregar o automato """    
     def __init__(self,arquivo):
-        
+        """ recebe o arquivo no formato de um af """
         try:
             arquivo = arquivo.argv[1]
             afn = open(arquivo, 'r')    
@@ -42,39 +43,95 @@ class AFN():
        
     
     def toAFD(self):
+        """ metodo para transformar o afn em afd """
         afd = {}
-        estados = [set(self.inicial)]
+        estados = [list(self.inicial)]
     
         for simbolo in self.alfabeto:
             for e in estados:
                 for s in self.alfabeto:
                     conjunto = set()
                     for estado in e:
-                        try:
+                        """ tratamento para transicoes nao completas """
+                        try:      
                             elem = set(self.transicoes[estado, s]) 
                             conjunto.update(elem.copy()) 
                         except KeyError:
                             self.transicoes[estado, s] = frozenset([])
                     
-                    if e.copy() != set() and conjunto.copy() != set():        
-                        afd[tuple(e.copy()), s] = conjunto.copy()
+                    conjunto = conjunto.copy()
+                    e = e[:]
                     
-                    if conjunto.copy() not in estados and conjunto.copy() != set():
-                        estados.append(conjunto.copy())
+                    if conjunto != set():
+                        """ordenacao necessaria para renomear os estados posteriormente"""
+                        conjunto = list(conjunto)
+                        conjunto.sort()   
+                        afd[tuple(e), s] = conjunto
+                    
+                    if conjunto not in estados and conjunto != set():
+                        estados.append(conjunto)
                         
         self.lista_estados = estados
+        
         return afd
+    
+    
+    def get_lista_estados(self,arquivo):
+    
+        arq = open(arquivo,'r')
+        lista_estados = []
+        estados = []
+        
+        for i in range(6):
+            linha = arq.readline()
+        
+        while linha != "end":
+            lista = linha.split(" ")
+            lista_estados.append(lista[0])
+            lista_estados.append(lista[1:])
+            linha = arq.readline()
+        
+        for estado in lista_estados:
+            if estado not in estados:
+                estados.append(estado)
+        
+        return estados
+        
         
     
-    def escreve_afd(self,sys,afd):
+    def renomear(self,afd):
+        """ metodo para renomear os estados para facilitar a escrita do arquivo dot """
+        renome = {}
+        afd_renomeado = {}
+        es = 0
+        estados_finais = []
         
+        for estado in self.lista_estados:
+            renome[tuple(estado)] = str(es)
+            es+=1
+        
+        for estado in self.lista_estados:
+            for final in self.final:
+                if final in estado:
+                    estados_finais.append(renome[tuple(estado)])
+        
+        for chave in afd.keys():
+            afd_renomeado[renome[chave[0]],chave[1]] = renome[tuple(afd[chave])]
+    
+        """ retorno de uma tupla com o novo afd e estados finais porque  preciso saber quem sao os estados finais depois da renomeacao """
+        return afd_renomeado,estados_finais 
+        
+    
+    
+    def escreve_afd(self,afd,sys):
+        """ metodo que escreve num arquivo na formatacao de um afd  """
         import re
         
         try:
             arq = open(sys.argv[2],'w')
         except IndexError:
             arq = open(self.nome_arq.strip(".afn")+".afd",'w')
-    
+        
         texto = []
         texto.append("AFD version 1\n")
         texto.append("states " + str((2**self.estados)-1) + "\n")
@@ -82,39 +139,31 @@ class AFN():
         
         texto.append("alfabeth " + re.sub("\[|\]|'|,","",str([simbolo for simbolo in self.alfabeto])) + "\n")
         texto.append("init " + re.sub("\(|\)|,|'","",str(tuple(self.inicial))) + "\n")
-        texto.append("finals")
+        texto.append("finals " + re.sub("\[|\]|,|\'","",str([estados for estados in afd[1]])))
         
-        for estado in self.lista_estados:
-            for final in self.final:
-                if final in estado:
-                    texto.append(" "+ re.sub("\'","",str(estado)))
-                    
-                    
         texto.append("\ntrans" + "\n")
         
-        for simbolo in self.alfabeto:
-            for estado in self.lista_estados:
-                texto.append(re.sub("\{|\}|,|'","",str(estado)) + " " + re.sub("\{|\}|,|'","",str(simbolo)) + " " + re.sub("\{|\}|,|'","",str(afd[tuple(estado),simbolo])) +"\n")
+        for chave in afd[0].keys():
+            texto.append(re.sub("\'","",chave[0]) + " " + re.sub("\'","",chave[1]) + " " + re.sub("\'","",afd[0][chave]) +"\n")
         
         
         texto.append("end")
         arq.writelines(texto)
         arq.close()
         
-        
     
-
 import sys
 class Main():
-    
+    """ classe main para teste """
     automato = AFN(sys)
     
     afd = automato.toAFD()
     
-    automato.escreve_afd(sys,afd)
+    r = automato.renomear(afd)
+    
+    automato.escreve_afd(r,sys)        
     
     
-    print(afd)
         
     
     
